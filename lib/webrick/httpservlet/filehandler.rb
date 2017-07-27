@@ -405,7 +405,7 @@ module WEBrick
         return false
       end
 
-      def set_dir_list(req, res)
+      def set_dir_list(req, res, namesizelimit=50)
         redirect_to_directory_uri(req, res)
         unless @options[:FancyIndexing]
           raise HTTPStatus::Forbidden, "no access permission to `#{req.path}'"
@@ -450,7 +450,7 @@ module WEBrick
         if namewidth == "*"
           namewidth = nil
         elsif !namewidth or (namewidth = namewidth.to_i) < 2
-          namewidth = 25
+          namewidth = namesizelimit
         end
         query = query.inject('') {|s, (k, v)| s << '&' << HTMLUtils::escape("#{k}=#{v}")}
 
